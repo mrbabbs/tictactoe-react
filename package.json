@@ -1,0 +1,15 @@
+{
+  "name": "tic-tac-toe-react",
+  "version": "1.0.0",
+  "description": "tic tac toe implmented using react",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "tictactoe"
+  ],
+  "author": "mrbabbs (Giovanni Esposito gioesps@gmail.com)",
+  "license": "MIT"
+}
