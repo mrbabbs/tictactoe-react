@@ -18,6 +18,10 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1"
   },
+  "pre-commit": [
+    "test",
+    "lint"
+  ],
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
@@ -29,6 +33,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
+    "pre-commit": "^1.2.2",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   }
