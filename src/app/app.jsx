@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import React from 'react';
 import ReactDom from 'react-dom';
+import Layout from './Layout';
 
 const appRoot = document.querySelector('#appRoot');
-ReactDom.render(<h1>{'Hello world!'}</h1>, appRoot);
+ReactDom.render(<Layout />, appRoot);
