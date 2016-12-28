@@ -1,10 +1,10 @@
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/app/app.jsx',
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.(js|jsx)$/,
       exclude: ['node_modules', 'dist'],
       loader: 'babel-loader',
       query: {
@@ -16,5 +16,11 @@ module.exports = {
     path: './dist',
     publicPath: '/assets/',
     filename: 'app.min.js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  },
+  eslint: {
+    configFile: './.eslintrc'
   }
 }
