@@ -1,6 +1,12 @@
 import React from 'react';
 import NewGame from './NewGame';
 import Board from './Board';
+import Button from '../form/Button';
+
+const defaultPlayers = {
+  X: 'Player X',
+  O: 'Player O',
+};
 
 class Game extends React.Component {
   static generatePlayersLabel(players) {
@@ -19,15 +25,11 @@ class Game extends React.Component {
   constructor() {
     super();
 
-    const players = {
-      X: 'Player X',
-      O: 'Player O',
-    };
 
     this.state = {
-      players,
+      players: { ...defaultPlayers },
       create: true,
-      playersId: Object.keys(players),
+      playersId: Object.keys(defaultPlayers),
       complete: false,
       winner: '',
       board: ['---', '---', '---'],
@@ -35,6 +37,9 @@ class Game extends React.Component {
     };
     this.onInsertPlayer = this.onInsertPlayer.bind(this);
     this.onCellClick = this.onCellClick.bind(this);
+    this.onStart = this.onStart.bind(this);
+    this.onRestart = this.onRestart.bind(this);
+    this.onNewGame = this.onNewGame.bind(this);
   }
 
   onInsertPlayer(playerId, name) {
@@ -51,6 +56,28 @@ class Game extends React.Component {
 
   onCellClick(id) {
     this.setCellValue(id, this.getCurrentPlayerId());
+  }
+
+  onRestart() {
+    this.setState({
+      create: false,
+      complete: false,
+      winner: '',
+      board: ['---', '---', '---'],
+      currentPlayerIndex: 0,
+    });
+  }
+
+  onNewGame() {
+    this.setState({
+      players: { ...defaultPlayers },
+      create: true,
+      playersId: Object.keys(defaultPlayers),
+      complete: false,
+      winner: '',
+      board: ['---', '---', '---'],
+      currentPlayerIndex: 0,
+    });
   }
 
   getCurrentPlayerId() {
@@ -154,36 +181,55 @@ class Game extends React.Component {
     this.setComplete();
   }
 
-  render() {
-    const onStart = () => { this.onStart(); };
+  shouldRenderEndGame() {
+    return (
+      this.state.complete &&
+        <div>
+          <span>End - {this.state.players[this.state.winner]}</span>
+          <p>
+            <Button onClick={this.onRestart}>Restart</Button>
+            <Button onClick={this.onNewGame}>New Game</Button>
+          </p>
+        </div>
+    );
+  }
 
+  shouldRenderNewGame() {
+    return (
+      !this.state.complete &&
+      this.state.create &&
+      <NewGame
+        playersId={this.state.playersId}
+        onInsertPlayer={this.onInsertPlayer}
+        onStart={this.onStart}
+      />
+    );
+  }
+
+  shouldRenderBoard() {
+    return (
+      !this.state.complete &&
+      !this.state.create &&
+      <Board
+        playersId={this.state.playersId}
+        onComplete={this.onComplete}
+        numRows={3}
+        numCells={3}
+        contentCells={this.state.board}
+        onCellClick={this.onCellClick}
+      />
+    );
+  }
+
+  render() {
     return (
       <div>
         <h3>
           {Game.generatePlayersLabel(this.state.players)}
         </h3>
-        {
-          (
-            this.state.complete &&
-            <span>End - {this.state.players[this.state.winner]}</span>
-          ) ||
-          (
-            this.state.create &&
-              <NewGame
-                playersId={this.state.playersId}
-                onInsertPlayer={this.onInsertPlayer}
-                onStart={onStart}
-              />
-          ) ||
-          <Board
-            playersId={this.state.playersId}
-            onComplete={this.onComplete}
-            numRows={3}
-            numCells={3}
-            contentCells={this.state.board}
-            onCellClick={this.onCellClick}
-          />
-        }
+        {this.shouldRenderBoard() ||
+          this.shouldRenderEndGame() ||
+          this.shouldRenderNewGame()}
       </div>
     );
   }
